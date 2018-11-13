@@ -5,8 +5,13 @@ WHERE ca.ancestor_concept_id = 1310149 /* Warfarin */
 	AND ca.descendant_concept_id = c.concept_id 
 ORDER BY max_levels_of_separation;
 
+
+/*************************************************************************
+* New Afib
+=======
 /*************************************************************************
 * Warfarin New Users
+
 *************************************************************************/
 
 WITH CTE_DRUG_INDEX AS (
@@ -14,7 +19,11 @@ WITH CTE_DRUG_INDEX AS (
 	FROM DRUG_EXPOSURE de
 	WHERE de.DRUG_CONCEPT_ID IN (
 		SELECT DESCENDANT_CONCEPT_ID 
+
+		FROM CONCEPT_ANCESTOR WHERE ANCESTOR_CONCEPT_ID = 	313217 /*Atrial fibrillation*/	
+=======
 		FROM CONCEPT_ANCESTOR WHERE ANCESTOR_CONCEPT_ID = 1310149 /*warfarin*/
+
 	)
 	GROUP BY de.PERSON_ID
 )
@@ -29,5 +38,4 @@ JOIN OBSERVATION_PERIOD op
 AND op.OBSERVATION_PERIOD_END_DATE
 WHERE (i.INDEX_DATE-op.OBSERVATION_PERIOD_START_DATE) >= 180
 ORDER BY i.PERSON_ID
-
 
